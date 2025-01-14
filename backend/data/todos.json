@@ -1,0 +1,13 @@
+[
+    {
+      "id": 1,
+      "title": "Learn JavaScript ES6 features",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Build a simple To-Do List app",
+      "completed": false
+    }
+  ]
+  
