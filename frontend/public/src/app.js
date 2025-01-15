@@ -15,7 +15,7 @@ const fetchTodos = async () => {
 // Render todos to the table
 const renderTodos = (todos) => {
   const todoList = document.getElementById('todo-list');
-  todoList.innerHTML = '';
+  todoList.innerHTML = ''; // Clear the list before rendering new todos
 
   todos.forEach((todo) => {
     const row = document.createElement('tr');
@@ -24,8 +24,10 @@ const renderTodos = (todos) => {
       <td>${todo.title}</td>
       <td>${todo.completed ? 'Completed' : 'Not Completed'}</td>
       <td>
-        ${todo.actions.markAsCompleted ? `<button onclick="markAsCompleted(${todo.id})">Complete</button>` : ''}
-        ${todo.actions.delete ? `<button onclick="removeTodo(${todo.id})">Remove</button>` : ''}
+        ${todo.actions.markAsCompleted ? 
+          `<button class="complete-btn" onclick="markAsCompleted(${todo.id})">Complete</button>` : ''}
+        ${todo.actions.delete ? 
+          `<button class="remove-btn" onclick="removeTodo(${todo.id})">Remove</button>` : ''}
       </td>
     `;
     todoList.appendChild(row);

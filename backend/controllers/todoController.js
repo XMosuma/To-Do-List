@@ -39,7 +39,12 @@ export const addTodo = (req, res) => {
   if (!title) return res.status(400).json({ error: 'Title is required' });
   
   const todos = readTodos();
-  const newTodo = { id: Date.now(), title, completed: false, actions: { markAsCompleted: true, delete: true } };
+  const newTodo = {
+    id: Date.now(), // Use timestamp as ID
+    title,
+    completed: false,
+    actions: { markAsCompleted: true, delete: true }
+  };
   todos.push(newTodo);
   writeTodos(todos);
   res.json(newTodo);
