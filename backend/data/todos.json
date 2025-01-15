@@ -1,13 +1,29 @@
 [
-    {
-      "id": 1,
-      "title": "Learn JavaScript ES6 features",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "title": "Build a simple To-Do List app",
-      "completed": false
+  {
+    "id": 1,
+    "title": "Learn JavaScript ES6 features",
+    "completed": false,
+    "actions": {
+      "markAsCompleted": true,
+      "delete": true
     }
-  ]
-  
+  },
+  {
+    "id": 2,
+    "title": "Build a simple To-Do List app",
+    "completed": false,
+    "actions": {
+      "markAsCompleted": true,
+      "delete": true
+    }
+  },
+  {
+    "id": 1736933121418,
+    "title": "go to the gym",
+    "completed": true,
+    "actions": {
+      "markAsCompleted": false,
+      "delete": true
+    }
+  }
+]
