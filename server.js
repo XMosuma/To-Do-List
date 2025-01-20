@@ -1,37 +1,38 @@
+// Express setup
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
-
+const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+// Serving static files (make sure 'public' folder is accessible)
 app.use(express.static(path.join(__dirname, "public")));
 
-// Define path to the JSON file
-const todosFilePath = path.join(__dirname, "todos.json");
-
-// Read todos from the JSON file
+// Function to read todos from a JSON file
 function readTodos() {
+  const filePath = path.join(__dirname, 'todos.json');
   try {
-    const data = fs.readFileSync(todosFilePath);
+    const data = fs.readFileSync(filePath);
     return JSON.parse(data);
   } catch (err) {
-    console.error('Error reading file', err);
+    console.error('Error reading todos.json', err);
     return [];
   }
 }
 
-// Write todos to the JSON file
+// Function to write todos to the JSON file
 function writeTodos(todos) {
+  const filePath = path.join(__dirname, 'todos.json');
   try {
-    fs.writeFileSync(todosFilePath, JSON.stringify(todos, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
   } catch (err) {
-    console.error('Error writing file', err);
+    console.error('Error writing todos.json', err);
   }
 }
 
-// Routes
+// API routes
 app.get("/api/todos", (req, res) => {
   const todos = readTodos();
   res.json(todos);
@@ -39,13 +40,10 @@ app.get("/api/todos", (req, res) => {
 
 app.post("/api/todos", (req, res) => {
   const { title, status } = req.body;
-  if (!title || !status) return res.status(400).json({ error: "Invalid data" });
-
   const todos = readTodos();
   const newTodo = { id: Date.now(), title, status };
   todos.push(newTodo);
   writeTodos(todos);
-
   res.status(201).json(newTodo);
 });
 
@@ -73,4 +71,6 @@ app.put("/api/todos/:id/status", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
