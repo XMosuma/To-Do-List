@@ -16,5 +16,4 @@ node server.js
 ├── todo.db
 ├── package.json
 ├── .gitignore
-├── vercel.json
 ├── README.md
