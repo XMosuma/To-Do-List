@@ -16,7 +16,7 @@
       height: 100vh;
     }
     .todo-container {
-      width: 400px;
+      width: 1000px;
       background: #fff;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
@@ -58,6 +58,11 @@
       color: red;
       cursor: pointer;
     }
+    /* Additional styles for completed tasks */
+    .completed {
+      background-color: #d4edda; /* Light green background */
+      color: #155724; /* Dark green text */
+    }
   </style>
 </head>
 <body>
@@ -92,10 +97,21 @@
       todoList.innerHTML = '';
       todos.forEach(todo => {
         const row = document.createElement('tr');
+
+        // Add the completed class if the status is 'completed'
+        if (todo.status === 'completed') {
+          row.classList.add('completed');
+        }
+
         row.innerHTML = `
           <td>${todo.id}</td>
           <td>${todo.title}</td>
-          <td>${todo.status}</td>
+          <td>
+            <select onchange="updateStatus(${todo.id}, this.value)">
+              <option value="pending" ${todo.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="completed" ${todo.status === 'completed' ? 'selected' : ''}>Completed</option>
+            </select>
+          </td>
           <td>
             <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
           </td>
@@ -129,6 +145,21 @@
 
       if (response.ok) {
         fetchTodos();
+      }
+    }
+
+    // Update status
+    async function updateStatus(id, newStatus) {
+      const response = await fetch(`/api/todos/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (response.ok) {
+        fetchTodos();
+      } else {
+        console.error('Failed to update status');
       }
     }
 

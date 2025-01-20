@@ -1,54 +1,75 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
 const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Define path to the JSON file
+const todosFilePath = path.join(__dirname, "todos.json");
 
-// Database setup
-const db = new sqlite3.Database("todo.db", (err) => {
-  if (err) return console.error("Database connection error:", err.message);
-  console.log("Connected to SQLite database.");
-});
+// Read todos from the JSON file
+function readTodos() {
+  try {
+    const data = fs.readFileSync(todosFilePath);
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading file', err);
+    return [];
+  }
+}
 
-// Create table if not exists
-db.run(
-  "CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, status TEXT NOT NULL)"
-);
+// Write todos to the JSON file
+function writeTodos(todos) {
+  try {
+    fs.writeFileSync(todosFilePath, JSON.stringify(todos, null, 2));
+  } catch (err) {
+    console.error('Error writing file', err);
+  }
+}
 
 // Routes
 app.get("/api/todos", (req, res) => {
-  db.all("SELECT * FROM todos", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
+  const todos = readTodos();
+  res.json(todos);
 });
 
 app.post("/api/todos", (req, res) => {
   const { title, status } = req.body;
   if (!title || !status) return res.status(400).json({ error: "Invalid data" });
 
-  db.run(
-    "INSERT INTO todos (title, status) VALUES (?, ?)",
-    [title, status],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.status(201).json({ id: this.lastID, title, status });
-    }
-  );
+  const todos = readTodos();
+  const newTodo = { id: Date.now(), title, status };
+  todos.push(newTodo);
+  writeTodos(todos);
+
+  res.status(201).json(newTodo);
 });
 
 app.delete("/api/todos/:id", (req, res) => {
   const { id } = req.params;
-  db.run("DELETE FROM todos WHERE id = ?", id, (err) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json({ message: "To-do deleted" });
-  });
+  const todos = readTodos();
+  const updatedTodos = todos.filter(todo => todo.id !== parseInt(id));
+  writeTodos(updatedTodos);
+  res.status(200).json({ message: "To-do deleted" });
+});
+
+app.put("/api/todos/:id/status", (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const todos = readTodos();
+  const todo = todos.find(todo => todo.id === parseInt(id));
+
+  if (todo) {
+    todo.status = status;
+    writeTodos(todos);
+    res.status(200).json(todo);
+  } else {
+    res.status(404).json({ error: "To-do not found" });
+  }
 });
 
 // Start server
