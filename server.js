@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+
 // Database setup
 const db = new sqlite3.Database("todo.db", (err) => {
   if (err) return console.error("Database connection error:", err.message);
