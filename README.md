@@ -18,3 +18,7 @@ node server.js
 ├── package.json
 ├── .gitignore
 ├── README.md
+
+
+About
+The To-Do List Application is a simple and efficient Node.js API designed to manage tasks. It allows users to add, remove, and mark tasks as completed. This project is ideal for practicing fundamental backend development concepts using JavaScript ES6 and the Express.js framework.
