@@ -8,12 +8,3 @@ npm install
 
 # Start the Server
 node server.js 
-
-/To-Do-List
-├── public/
-│   ├── index.html
-├── server.js
-├── todo.db
-├── package.json
-├── .gitignore
-├── README.md

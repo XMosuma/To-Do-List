@@ -4,166 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f0f4f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .todo-container {
-      width: 1000px;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      display: flex;
-      gap: 10px;
-    }
-    input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px;
-      background: #5a67d8;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    .delete-btn {
-      color: red;
-      cursor: pointer;
-    }
-    /* Additional styles for completed tasks */
-    .completed {
-      background-color: #d4edda; /* Light green background */
-      color: #155724; /* Dark green text */
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="todo-container">
-    <h1>To-Do List</h1>
-    <form id="todo-form">
-      <input type="text" id="todo-title" placeholder="Enter a task" required />
-      <button type="submit">Add</button>
-    </form>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Task</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="todo-list"></tbody>
-    </table>
+  <div class="app-container">
+    <header>
+      <h2>Website To-Do</h2>
+    </header>
+    <div class="todo-card">
+      <ul id="todo-list" class="todo-list"></ul>
+      <button id="newTaskBtn" class="new-task-btn">+ New Task</button>
+    </div>
   </div>
 
-  <script>
-    const form = document.getElementById('todo-form');
-    const todoList = document.getElementById('todo-list');
+  <!-- Add Task Modal -->
+  <div id="taskModal" class="modal hidden">
+    <div class="modal-content">
+      <input type="text" id="taskInput" placeholder="Enter a new task" />
+      <button id="addTaskBtn">Add Task</button>
+    </div>
+  </div>
 
-    // Fetch todos on page load
-    async function fetchTodos() {
-      const response = await fetch('/api/todos');
-      const todos = await response.json();
-
-      todoList.innerHTML = '';
-      todos.forEach(todo => {
-        const row = document.createElement('tr');
-
-        // Add the completed class if the status is 'completed'
-        if (todo.status === 'completed') {
-          row.classList.add('completed');
-        }
-
-        row.innerHTML = `
-          <td>${todo.id}</td>
-          <td>${todo.title}</td>
-          <td>
-            <select onchange="updateStatus(${todo.id}, this.value)">
-              <option value="pending" ${todo.status === 'pending' ? 'selected' : ''}>Pending</option>
-              <option value="completed" ${todo.status === 'completed' ? 'selected' : ''}>Completed</option>
-            </select>
-          </td>
-          <td>
-            <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
-          </td>
-        `;
-        todoList.appendChild(row);
-      });
-    }
-
-    // Add a new to-do
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const title = document.getElementById('todo-title').value;
-
-      const response = await fetch('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, status: 'pending' }),
-      });
-
-      if (response.ok) {
-        fetchTodos();
-        form.reset();
-      }
-    });
-
-    // Delete a to-do
-    async function deleteTodo(id) {
-      const response = await fetch(`/api/todos/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        fetchTodos();
-      }
-    }
-
-    // Update status
-    async function updateStatus(id, newStatus) {
-      const response = await fetch(`/api/todos/${id}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (response.ok) {
-        fetchTodos();
-      } else {
-        console.error('Failed to update status');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', fetchTodos);
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
