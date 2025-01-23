@@ -25,31 +25,36 @@ header h2 {
   background: #ffffff;
   border-radius: 8px;
   padding: 20px;
-  width: 300px;
+  width: 400px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.todo-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.todo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.todo-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 5px;
-  border-bottom: 1px solid #e0e0e0;
+.todo-table th, .todo-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: center;
 }
 
-.todo-list li:last-child {
-  border-bottom: none;
+.todo-table th {
+  background-color: #8e44ad;
+  color: #fff;
 }
 
-.todo-list li.completed {
-  text-decoration: line-through;
-  color: #a0a0a0;
+.todo-table td button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.todo-table td button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .new-task-btn {

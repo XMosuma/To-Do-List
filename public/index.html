@@ -9,10 +9,20 @@
 <body>
   <div class="app-container">
     <header>
-      <h2>Website To-Do</h2>
+      <h2>To-Do-List</h2>
     </header>
     <div class="todo-card">
-      <ul id="todo-list" class="todo-list"></ul>
+      <table id="todo-table" class="todo-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="todo-list" class="todo-list"></tbody>
+      </table>
       <button id="newTaskBtn" class="new-task-btn">+ New Task</button>
     </div>
   </div>

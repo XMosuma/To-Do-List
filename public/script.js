@@ -12,13 +12,17 @@ const fetchTasks = async () => {
   todoList.innerHTML = tasks
     .map(
       (task) => `
-    <li class="${task.completed ? 'completed' : ''}">
-      <span>${task.task}</span>
-      <div>
-        <button onclick="completeTask(${task.id})">✔</button>
+    <tr>
+      <td>${task.id}</td>
+      <td>${task.task}</td>
+      <td>${task.completed ? 'Completed' : 'Pending'}</td>
+      <td>
+        <button onclick="completeTask(${task.id})" ${
+          task.completed ? 'disabled' : ''
+        }>✔</button>
         <button onclick="deleteTask(${task.id})">🗑️</button>
-      </div>
-    </li>
+      </td>
+    </tr>
   `
     )
     .join('');
