@@ -11,10 +11,16 @@ npm install
 node server.js 
 
 /To-Do-List
+├── api/
+│   ├── task.js
+├── db/
+│   ├── database.js
+│   ├── todo.db
 ├── public/
 │   ├── index.html
 ├── server.js
-├── todo.db
+├── node_modules/
 ├── package.json
+├── package-lock.json
 ├── .gitignore
 ├── README.md

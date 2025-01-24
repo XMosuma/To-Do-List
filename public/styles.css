@@ -5,12 +5,17 @@ body {
   background-color: #f3f3fc;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 60px; /* Adjust for fixed header */
   height: 100vh;
 }
 
-.app-container {
-  text-align: center;
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 header h2 {
@@ -18,32 +23,50 @@ header h2 {
   color: #fff;
   padding: 10px;
   margin: 0;
-  border-radius: 8px 8px 0 0;
+}
+
+.app-container {
+  text-align: center;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  flex-direction: column; /* Stack elements vertically */
 }
 
 .todo-card {
   background: #ffffff;
   border-radius: 8px;
   padding: 20px;
-  width: 400px;
+  max-width: 800px; /* Set a maximum width for the to-do list */
+  width: 90%; /* Allow responsiveness */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  margin: 20px 0; /* Add spacing around the card */
 }
 
 .todo-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  table-layout: fixed;
 }
 
-.todo-table th, .todo-table td {
+.todo-table th,
+.todo-table td {
   border: 1px solid #e0e0e0;
   padding: 10px;
-  text-align: center;
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .todo-table th {
   background-color: #8e44ad;
   color: #fff;
+}
+
+.todo-table td {
+  white-space: normal;
 }
 
 .todo-table td button {
@@ -92,7 +115,8 @@ header h2 {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
+  width: 90%;
+  max-width: 400px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 

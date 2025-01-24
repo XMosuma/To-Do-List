@@ -70,3 +70,13 @@ addTaskBtn.addEventListener('click', addTask);
 
 // Fetch tasks on page load
 fetchTasks();
+
+// Adjust table layout on window resize
+window.addEventListener('resize', () => {
+  const table = document.getElementById('todo-table');
+  if (window.innerWidth < 600) {
+    table.style.fontSize = '12px';
+  } else {
+    table.style.fontSize = 'inherit';
+  }
+});
